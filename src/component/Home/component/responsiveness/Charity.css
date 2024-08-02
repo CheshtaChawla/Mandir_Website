@@ -1,0 +1,171 @@
+/* .custom-charity-scan-complete-div{
+   justify-content: center; 
+} */
+
+/* .custom-charity-scan-complete-div{
+   margin-left: 10%; 
+}*/
+/* .custom-charity-ScanToDonate-image{
+   width: 280px;
+   height: 280px;
+} */
+/* .custom-slider-div{
+   width: 800px;
+} */
+/* @media(min-width:1536px){
+   .custom-slider-div{
+      max-width: auto;
+   }
+} */
+/* @media (max-width: 1536px){
+   .custom-slider-div{
+      max-width: 650px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 250px;
+      height: 250px;
+   }
+   .custom-charity-scan-complete-div{
+      margin-left: 15%;
+   }
+}
+@media (max-width: 1378px){
+   .custom-slider-div{
+      max-width: 630px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 250px;
+      height: 250px;
+   }
+   .custom-charity-scan-complete-div{
+      margin-left: 10%;
+   }
+}
+@media (max-width: 1280px){
+   .custom-slider-div{
+      max-width: 600px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 200px;
+      height: 200px;
+   }
+}
+@media (max-width: 1190px){
+   .custom-slider-div{
+      max-width: 550px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 200px;
+      height: 200px;
+   }
+}
+@media (max-width: 1130px){
+   .custom-slider-div{
+      max-width: 500px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 200px;
+      height: 200px;
+   }
+}
+@media (max-width: 1050px){
+   .custom-slider-div{
+      max-width: 500px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 200px;
+      height: 200px;
+   }
+}
+@media (max-width: 1024px){
+   .custom-slider-div{
+    width: 500px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 180px;
+      height: 180px;
+   }
+}
+@media (max-width: 1000px){
+   .custom-slider-div{
+    width: 450px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 180px;
+      height: 180px;
+   }
+}
+@media (max-width: 950px){
+   .custom-slider-div{
+    width: 40px;
+   }
+   .custom-charity-ScanToDonate-image{
+      width: 180px;
+      height: 180px;
+   }
+}
+@media (max-width: 768px) {
+   .custom-slider-div {
+     width: 100%;
+   }
+   .custom-charity-ScanToDonate-image {
+     width: 180px;
+     height: 180px;
+   }
+ }
+  */
+ @media (max-width: 639px) {
+   .custom-slider-div {
+     width: 1  00px;
+   }
+   .custom-charity-data-div {
+     flex-direction: column;
+   }
+   .custom-charity-scan-complete-div {
+     flex-direction: row;
+     justify-content: left;
+   }
+   .custom-charity-underline{
+      width: 135px;
+      height: 3px;
+      background-color: #ff9933;
+   }
+   .custom-charity-heading-div{
+      margin-left: 10px;
+      margin-bottom: 16px;
+   }
+   .custom-charity-complete-div{
+      margin-top: 30px;
+   }
+   .custom-slider-div{
+      padding: 10px;
+      padding-right: 10px;
+      width: 100%;
+      height: 100%;
+      
+   }
+   .custom-charity-scaner-image{
+      width: 250px;
+      height: 250px;
+   }
+   .custom-charity-scan-complete-div{
+      margin-left: 10px;
+      margin-top: 20px;
+
+   }
+   .custom-charity-ScanToDonate-heading{
+      font-size: 25px;
+      margin-bottom: 2px;
+      margin-left: 35px;
+   }
+   .custom-charity-ScanToDonate-details{
+      font-size: 18px;
+      margin-left: 12%;
+      margin-top: 20%;
+      align-items: center;
+   }
+   .custom-card-donate{
+      margin-left: 5%;
+   }
+ }
+ 

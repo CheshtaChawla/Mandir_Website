@@ -1,0 +1,30 @@
+@media (max-width: 639px){
+    .custom-form-heading{
+        margin-left: 0px;
+    }
+    .custom-contactUs{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .custom-form-heading{
+        font-size: 40px;
+    }
+    .custom-form-div{
+        box-shadow: 0 6px 12px -8px rgb(239, 174, 94.2);
+    }
+    .custom-contactUs-underline{
+        width: 180px;
+        height: 3px;
+        background-color: #ff9933;
+    }
+    .custom-form-heading{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .custom-contactUs-heading-div{
+        margin-top: 20px;
+    }
+    .custom{
+        font-size: 13px;
+    }
+}

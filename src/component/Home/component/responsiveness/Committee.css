@@ -1,0 +1,52 @@
+.card-committee-inner{
+  width: 250px;
+  /* width: 40%; */
+  /* width:fit-content; */
+
+}
+@media (max-width: 639px){
+    
+    .custom-joinMembership-button{
+        font-size: small;
+        width: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .custom-joinMembership-button-div{
+      padding-top: 12px;
+    }
+    .slider-card{
+        font-size: smaller;
+        
+    }
+    .custom-complete-committee-div{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .custom-committee-card{
+       padding-left: 2px; 
+       padding-right: 2px; 
+       
+    }
+    .custom-committee-heading{
+        /* display: none; */
+        font-size: 40px;
+      }
+    .custom-committee-circle{
+        display: none;
+        /* width: 100px;
+        height: 100px; */
+      }
+      .custom-committee-underline{
+        width: 180px;
+        height: 3px;
+        background-color: #ff9933;
+      }
+      .custom-card-text{
+        font-size: smaller;
+      }
+      .custom-committee-heading-div {
+        margin-top: 20px;
+      }
+    
+}

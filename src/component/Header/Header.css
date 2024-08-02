@@ -1,0 +1,61 @@
+.hamburger {
+  width: 30px;
+  height: 30px;
+  z-index: 3;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 5px;
+  margin-top: 5px;
+  /* position: sticky; */
+}
+
+.elements {
+  width: 25px;
+  height: 4px;
+  background-color:white;
+  margin: 4px 0;
+ 
+}
+.mobile-navbar-list {
+  font-size: larger;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: fit-content;
+  position: absolute;
+  z-index: 1000;
+}
+
+/* Show navbar list when 'open' class is added */
+.mobile-navbar-list.open {
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media (max-width: 767px) {
+  .navbar {
+    /* display: none; */
+    list-style: none;
+  }
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    size: small;
+  }
+  .mobile-navbar-list{
+    font-size: 21px;
+    font-weight: 350;
+    z-index: 1;
+  }
+  /* .divider-menu{
+    border: 3px;
+  } */
+}
+
