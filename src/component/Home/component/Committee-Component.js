@@ -22,58 +22,23 @@ export default function Committee() {
     autoplay: true,
     fade: true,
   };
-  let committeeDataSlide1 = [
-    {
-      image: babaJi,
-      title: "Harsh Meghwal",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "Bhavna Meghwal",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "Gourav Verma",
-      text: "Committee Member",
-    },
-
-  ]
-  let committeeDataSlide2 = [
-    {
-      image: babaJi,
-      title: "A",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "B",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "C",
-      text: "Committee Member",
-    },
-  ]
-  let committeeDataSlide3 = [
-    {
-      image: babaJi,
-      title: "D",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "E",
-      text: "Committee Member",
-    },
-    {
-      image: babaJi,
-      title: "F",
-      text: "Committee Member",
-    },
-  ]
+  const committeeDataSlide1 = [
+    { id: 1, image: babaJi, title: "Harsh Meghwal", text: "Committee Member" },
+    { id: 2, image: babaJi, title: "Bhavna Meghwal", text: "Committee Member" },
+    { id: 3, image: babaJi, title: "Gourav Verma", text: "Committee Member" },
+  ];
+  
+  const committeeDataSlide2 = [
+    { id: 4, image: babaJi, title: "A", text: "Committee Member" },
+    { id: 5, image: babaJi, title: "B", text: "Committee Member" },
+    { id: 6, image: babaJi, title: "C", text: "Committee Member" },
+  ];
+  
+  const committeeDataSlide3 = [
+    { id: 7, image: babaJi, title: "D", text: "Committee Member" },
+    { id: 8, image: babaJi, title: "E", text: "Committee Member" },
+    { id: 9, image: babaJi, title: "F", text: "Committee Member" },
+  ];
 
 
   const [showForm, setShowForm] = useState(false);
@@ -103,17 +68,17 @@ export default function Committee() {
           <Slider {...settings}>
             <div className="slider-card w-1/3">
               {committeeDataSlide1.map(data => (
-                <CommitteeCard>{data}</CommitteeCard>
+                <CommitteeCard key={data.id}>{data}</CommitteeCard>
               ))}
             </div>
             <div className="slider-card w-1/3">
               {committeeDataSlide2.map(data => (
-                <CommitteeCard>{data}</CommitteeCard>
+                <CommitteeCard key={data.id}>{data}</CommitteeCard>
               ))}
             </div>
             <div className="slider-card w-1/3">
               {committeeDataSlide3.map(data => (
-                <CommitteeCard>{data}</CommitteeCard>
+                <CommitteeCard key={data.id}>{data}</CommitteeCard>
               ))}
             </div>
           </Slider>

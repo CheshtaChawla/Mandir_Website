@@ -1,8 +1,10 @@
 import whatsapp from "../../Image/whatsapp.png"
 import instagram from "../../Image/instagram.png"
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import toast from "react-hot-toast";
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "../../../dbConfig/db";
 
 import '../component/responsiveness/ContactUs.css';
 
@@ -31,21 +33,18 @@ export default function Form() {
         };
 
        
+
         try {
-            const response = await axios.post('http://localhost:3000/submit-form', formData);   
+            const docRef = await addDoc(collection(db, "contact_form"), formData);
+
             //Axios helps developers make HTTP requests from NodeJS, If the request is successful, you will receive a response with the data requested. If the request fails, you will get an error.
             //await: as we know the database reed the data line by line and during axios action to take place it take some time ..so await fuction stops the process of further reading the code till the axios function complete its working
-
-         
-                handleClose();
-                toast.success('Successfully submitted the form!');
-
-    
-
+        handleClose();
+        toast.success('Successfully submitted the form!');
 
         } catch (error) {
             console.error('There was an error!', error);
-            toast.error("There was an error in submitting the form.");
+            toast.error("There was an error in submitting the Contact-Us form.");
         }
     };
     return (

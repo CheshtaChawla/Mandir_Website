@@ -19,21 +19,9 @@ export default function BookingComponent() {
   };
 
   let BookingData = [
-    {
-      image: banner2,
-      heading: "Book Kirtan",
-      details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."
-    },
-    {
-      image: banner2,
-      heading: "Book",
-      details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."
-    },
-    {
-      image: banner2,
-      heading: "Kirtan",
-      details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."
-    },
+    {image: banner2, heading: "Book Kirtan", id:1, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
+    {image: banner2, heading: "Book", id:2, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
+    {image: banner2, heading: "Kirtan", id:3, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
   ]
   return (
     <>
@@ -47,7 +35,7 @@ export default function BookingComponent() {
           <div className="custom-booking-slider rounded-2xl border border-orange-100 lg:mt-10 lg:ml-40 lg:mr-40 md:mt-5 md:ml-20 md:mr-20 sm:mt-5 sm:ml-14 sm:mr-14 ">
             <Slider {...settings} >
               {BookingData.map(data => (
-                <BookingCard>{data}</BookingCard>
+                <BookingCard key={data.id}>{data}</BookingCard>
               ))}
             </Slider>
           </div>
