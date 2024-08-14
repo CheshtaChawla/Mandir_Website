@@ -1,20 +1,31 @@
 import EventCard from "./Event-Card";
 import Slider from "react-slick";
 // import MahaShivratri from "../../Image/MahaShivratri.jpg";
-import Diwali from "../../Image/diwalievent.jpg";
-import Holi from "../../Image/holievent.jpg";
+// import Diwali from "../../Image/diwalievent.jpg";
+// import Holi from "../../Image/holievent.jpg";
 import Circle from "../../Image/Circle.png";
 
 import '../component/responsiveness/Event.css';
 
 import React, { useEffect, useState, useRef } from 'react';
 import DonatePopUp from "../component/DonatePopUp";
-
+import fetchEventData from "../component/fetchEventData"; 
 export default function EventComponent() {
 
-
+//In event slider:if only one slide data is provided at that time the code become unwell and start showing 3 slides with same data..so try to give atleast 2 slides data at at time
 
   const [activeModal, setActiveModal] = useState(null);
+
+  const [eventData, setEventData] = useState([]);
+
+  useEffect(() => {
+    const getEventData = async () => {
+      const data = await fetchEventData();  // fetches all documents from the events collection.
+      setEventData(data);
+      // console.log(eventData);
+    };
+    getEventData();
+  }, []);
 
   const handlePopUpButtonClick = () => {
     setActiveModal(true);
@@ -32,58 +43,58 @@ export default function EventComponent() {
     arrows: false,
     infinite: true,
     speed: 500,
-    // slidesToShow: 1,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
   };
 
-  let eventData = [
-    {
-      event_name: "Maha Shivratri",
-      event_date: "10 JAN 2024",
-      event_time: "11:00 AM",
-      event_image: Holi,
-      event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
-      in honour of the deity Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha. Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha.`,
+  // let eventData = [
+  //   {
+  //     event_name: "Maha Shivratri",
+  //     event_date: "10 JAN 2024",
+  //     event_time: "11:00 AM",
+  //     event_image: Holi,
+  //     event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
+  //     in honour of the deity Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha. Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha.`,
 
-    },
-    {
-      event_name: "Diwali",
-      event_date: "10 NOV 2024",
-      event_time: "10:00 AM",
-      event_image: Diwali,
-      event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
-      in honour of the deity Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha. Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha.`,
+  //   },
+  //   {
+  //     event_name: "Diwali",
+  //     event_date: "10 NOV 2024",
+  //     event_time: "10:00 AM",
+  //     event_image: Diwali,
+  //     event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
+  //     in honour of the deity Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha. Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha.`,
 
-    },
-    {
-      event_name: "Holi Phag",
-      event_date: "10 March 2024",
-      event_time: "09:00 AM",
-      event_image: Holi,
-      event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
-      in honour of the deity Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha. Shiva, between February and
-      March. According to the Hindu calendar, the festival is
-      observed on the fourteenth day of the dark half of the lunar
-      month of Phalguna or Magha.`,
+  //   },
+  //   {
+  //     event_name: "Holi Phag",
+  //     event_date: "10 March 2024",
+  //     event_time: "09:00 AM",
+  //     event_image: Holi,
+  //     event_description: `Brief: Maha Shivaratri is a Hindu festival celebrated annually
+  //     in honour of the deity Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha. Shiva, between February and
+  //     March. According to the Hindu calendar, the festival is
+  //     observed on the fourteenth day of the dark half of the lunar
+  //     month of Phalguna or Magha.`,
 
-    }
-  ];
+  //   }
+  // ];
 
   return (
     <>
@@ -104,16 +115,15 @@ export default function EventComponent() {
 
             key={index}
             name={data.event_name}
-            date={data.event_date}
-            time={data.event_time}
-            image={data.event_image}
+            startDate={data.event_start_date}
+            endDate={data.event_end_date}
+            startTime={data.event_start_time}
+            endTime={data.event_end_time}
+            image={data.event_image} // Holi is for Default image if event_image is not available
             description={data.event_description}
             onButtonClick={handlePopUpButtonClick}
-
             />
-          )
-
-          )}
+          ))}
         </Slider>
         {activeModal !== null && (
         <Modal onClose={handlePopUpButtonClose} />

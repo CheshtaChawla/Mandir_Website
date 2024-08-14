@@ -1,5 +1,5 @@
 import '../component/responsiveness/Event.css';
-export default function EventCard({name, date, time, image, description, onButtonClick}) {
+export default function EventCard({name ,startDate, endDate, startTime, endTime, image, description, onButtonClick}) {
 
   return (
 
@@ -20,12 +20,12 @@ export default function EventCard({name, date, time, image, description, onButto
                   {/* date -> float left*/}
                   <div className="custom-date float-left mr-5 flex flex-row ">
                     <span className="custom-date-icon material-symbols-outlined text-2xl">calendar_month</span>
-                    <h4 className='custom-date-text text-xl'> {date} </h4>
+                    <h4 className='custom-date-text text-xl'> {startDate} - {endDate} </h4>
                   </div>
                   {/* time -> float right*/}
                   <div className="custom-time float-right ml-5 flex flex-row">
                     <span class="material-symbols-outlined custom-time-icon text-2xl">alarm_on</span>
-                    <span className='custom-time-text text-xl'>{time}</span>
+                    <span className='custom-time-text text-xl'>{startTime} - {endTime}</span>
                   </div>
                 </div>
               </div>
@@ -54,7 +54,8 @@ export default function EventCard({name, date, time, image, description, onButto
             {/* right -> image */}
             <img
               className="custom-event-image w-auto h-auto"
-              src={image}
+              src={image}   //in the database i have to pass the image with the datatype = string
+              alt={name}
             />
           </div>
         </div>

@@ -50,6 +50,7 @@ export default function FooterMobile() {
 
                     <div className='flex flex-col items-center ml-10'>
                         <ul>
+                            
                             <li onClick={() => scrollToSection("committee")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                 Committee
                             </li>
@@ -59,6 +60,7 @@ export default function FooterMobile() {
                             <li onClick={() => scrollToSection("about")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                 AboutUs
                             </li>
+                            
                         </ul>
                     </div>
                 </div>
