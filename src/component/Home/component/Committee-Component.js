@@ -7,38 +7,68 @@ import Slider from "react-slick";
 
 import babaJi from "../../Image/babaJi.webp"
 import CommitteeCard from "../component/Committee-Cards";
+import fetchCommitteeData from './fetchCommitteeData';
 
 import '../component/responsiveness/Committee.css';
+import { Fade } from 'react-bootstrap';
 
 export default function Committee() {
+
+
+  const [activeModal, setActiveModal] = useState(null);
+  const [committeeData, setCommitteeData] = useState([]);
+
+  useEffect(() => {
+    const getCommitteeData = async () => {
+      const data = await fetchCommitteeData();  // fetches all documents from the events collection.
+      setCommitteeData(data);
+      
+    };
+    getCommitteeData();
+  }, []);
+
+
+
+  const handlePopUpButtonClick = () => {
+    setActiveModal(true);
+  };
+
+  const handlePopUpButtonClose = () => {
+    setActiveModal(null);
+  };
+
 
   const settings = {
     dots: false,
     arrows: false,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
+    infinite: false,
+    speed: 300,
+    // fade:true,  ERROR -> fade option in the slider is designed to work with a single slide at a time. When fade is enabled, it disables the "sliding" functionality, and instead of multiple slides being displayed at once (as you have with slidesToShow: 3), it transitions between individual slides using a fade effect.
+    slidesToShow: 3, // Keep 3 slides in view
     slidesToScroll: 1,
-    autoplay: true,
-    fade: true,
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 3000, // 3 seconds interval
+    pauseOnHover: true, // Optional: Pauses autoplay on hover
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
-  const committeeDataSlide1 = [
-    { id: 1, image: babaJi, title: "Harsh Meghwal", text: "Committee Member" },
-    { id: 2, image: babaJi, title: "Bhavna Meghwal", text: "Committee Member" },
-    { id: 3, image: babaJi, title: "Gourav Verma", text: "Committee Member" },
-  ];
-  
-  const committeeDataSlide2 = [
-    { id: 4, image: babaJi, title: "A", text: "Committee Member" },
-    { id: 5, image: babaJi, title: "B", text: "Committee Member" },
-    { id: 6, image: babaJi, title: "C", text: "Committee Member" },
-  ];
-  
-  const committeeDataSlide3 = [
-    { id: 7, image: babaJi, title: "D", text: "Committee Member" },
-    { id: 8, image: babaJi, title: "E", text: "Committee Member" },
-    { id: 9, image: babaJi, title: "F", text: "Committee Member" },
-  ];
+
+
 
 
   const [showForm, setShowForm] = useState(false);
@@ -48,9 +78,10 @@ export default function Committee() {
   };
 
   const handleClose = () => {
-    console.log("handleClose called");
-
+    // console.log("handleClose called");
     setShowForm(false);
+
+    // setShowForm(false);
 };
   return (
     <>
@@ -64,24 +95,20 @@ export default function Committee() {
           </h1>
         </div>
         <div className="2xl:ml-40 2xl:mr-40 xl:ml-40 xl:mr-40 lg:ml-40 lg:mr-40 md:ml-20 md:mr-20 sm:ml-10 sm:mr-10">
-
-          <Slider {...settings}>
-            <div className="slider-card w-1/3">
-              {committeeDataSlide1.map(data => (
-                <CommitteeCard key={data.id}>{data}</CommitteeCard>
-              ))}
-            </div>
-            <div className="slider-card w-1/3">
-              {committeeDataSlide2.map(data => (
-                <CommitteeCard key={data.id}>{data}</CommitteeCard>
-              ))}
-            </div>
-            <div className="slider-card w-1/3">
-              {committeeDataSlide3.map(data => (
-                <CommitteeCard key={data.id}>{data}</CommitteeCard>
-              ))}
-            </div>
-          </Slider>
+        <Slider {...settings}>
+  {committeeData.map((data, index) => (
+    <div key={index}>
+      <CommitteeCard
+      className=""
+        image={data.image}
+        title={data.title}
+        text={data.subtitle}
+        onButtonClick={handlePopUpButtonClick}
+      />
+    </div>
+  ))}
+</Slider>
+        
         </div>
         <div className="custom-joinMembership-button-div 2xl:pt-10 xl:pt-8 lg:pt-8 md:pt-6 sm:pt-6">
           <div className="flex flex-row justify-center">

@@ -32,12 +32,12 @@ export default function Header() {
           >
             Event
           </li>
-          <li onClick={() => scrollToSection("charity")}
+          {/* <li onClick={() => scrollToSection("charity")}
             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
             style={{ cursor: 'pointer' }}
           >
             Charity
-          </li>
+          </li> */}
           <li onClick={() => scrollToSection("booking")}
             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
             style={{ cursor: 'pointer' }}

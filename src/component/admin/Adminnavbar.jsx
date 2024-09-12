@@ -1,68 +1,115 @@
-// import React from 'react';
-// import AdminHome from "./AdminHome";
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-// // import { db } from '../../dbConfig/db';
-// // import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-// // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+const LogoutModal = ({ isVisible, onConfirm, onCancel }) => {
+  if (!isVisible) return null;
 
+  return (
+    <div className="fixed inset-0 bg-gray-500  bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded shadow-md w-80">
+        <h3 className="text-lg font-semibold mb-4">Confirm Logout</h3>
+        <p className="mb-4">Are you sure you want to logout?</p>
+        <div className="flex justify-end">
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+            onClick={onConfirm}
+          >
+            Logout
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
+export const AdminNavbar = () => {
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const navigate = useNavigate();
 
-// export default function AdminComponent (){
-// return (
-// <>
-// <h1>Admin Panel</h1>
-// <div>
-// <header>
-//       <nav className="navbar bg-opacity-100 flex-center space-between">
-//         {/* flex flex-col mt-4 font-medium lg:flex-row lg:mt-0 justify-between items-center w-full lg:flex lg:w-auto  */}
-//         <ul className="flex justify-center items-center xl:space-x-28 xl:text-2xl lg:space-x-18 lg:text-2xl md:space-x-14 sm:space-x-14 text-xl lg:order-1 font-bellefair">
+  const handleLogoutClick = () => {
+    setIsLogoutModalVisible(true);
+    
+  };
 
-//           <li onClick={() => scrollToSection("adminhero")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Home
-//           </li>
-//           <li onClick={() => scrollToSection("adminevent")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Event
-//           </li>
-//           <li onClick={() => scrollToSection("admincharity")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Charity
-//           </li>
-//           <li onClick={() => scrollToSection("adminbooking")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Booking
-//           </li>
-//           <li onClick={() => scrollToSection("admincommittee")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Committee
-//           </li>
-//           <li onClick={() => scrollToSection("admincontact")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             Contact Us
-//           </li>
-//           <li onClick={() => scrollToSection("adminabout")}
-//             className=" border-b md:border-0 lg:border-0 hover:text-white lg:p-0 lg:w-auto text-white"
-//             style={{ cursor: 'pointer' }}
-//           >
-//             About Us
-//           </li>
-//         </ul>
-//       </nav>
-//     </header>
-// </div>
-// </>
-// );
-// }
+  // const handleLogoutConfirm = () => {
+  //   localStorage.setItem('isAuthenticated', 'false'); // Handle your logout logic
+  //   setIsLogoutModalVisible(false);
+  //   navigate('/login'); // Redirect to login page
+  // };
+
+  const handleLogoutConfirm = async () => {
+    try {
+      await new Promise((resolve) => {
+        localStorage.setItem('isAuthenticated', 'false'); // Handle your logout logic
+        setIsLogoutModalVisible(false);
+        navigate('/login'); // Redirect to login page
+       
+        resolve();
+      });
+  
+     
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Handle any errors if necessary
+    }
+  };
+  
+
+  const handleLogoutCancel = () => {
+    setIsLogoutModalVisible(false);
+  };
+
+  return (
+    <>
+      <aside className="bg-[#D9D9D9] h-screen fixed flex flex-col justify-between h-[100vh]">
+        <nav className="flex flex-col space-y-4 p-2 ">
+          <ul className="flex flex-col space-y-1 text-xl font-bellefair">
+            {[
+              { path: "/admin", label: "Home", exact: true },
+              { path: "/admin/event", label: "Event" },
+              // { path: "/admin/charity", label: "Charity" },
+              { path: "/admin/booking", label: "Booking" },
+              { path: "/admin/committee", label: "Committee" },
+              { path: "/admin/contactUs", label: "Contact Us" },
+              { path: "/admin/aboutUs", label: "About Us" },
+            ].map((item) => (
+              <li key={item.path}>
+                <NavLink
+                  to={item.path}
+                  end={true}
+                  className={({ isActive }) =>
+                    `block w-full p-2 rounded-lg text-center ${
+                      isActive ? 'bg-[#DCB44D] text-black' : 'bg-white text-black'
+                    }`
+                  }
+                  style={{ cursor: 'pointer' }}
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+          <div className="p-2 pb-24">
+            <button
+              className="block w-full p-2 rounded-lg text-center bg-[#DCB44D] text-white"
+              onClick={handleLogoutClick}
+            >
+              Logout
+            </button>
+          </div>
+        </nav>
+      </aside>
+      <LogoutModal
+        isVisible={isLogoutModalVisible}
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
+    </>
+  );
+};

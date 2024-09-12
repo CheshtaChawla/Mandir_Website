@@ -39,12 +39,13 @@ export default function FooterMobile() {
                             <li onClick={() => scrollToSection("event")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                 Events
                             </li>
-                            <li onClick={() => scrollToSection("charity")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
+                            {/* <li onClick={() => scrollToSection("charity")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                 Charity
-                            </li>
+                            </li> */}
                             <li onClick={() => scrollToSection("booking")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                 Booking
                             </li>
+                          
                         </ul>
                     </div>
 
@@ -72,7 +73,7 @@ export default function FooterMobile() {
                             <img src={phone} style={{ width: '20px', height: '20px' }} />
                             <h1 className='pl-2'>+91 8737880053</h1>
                         </div>
-                        <div className='flex flex-row mb-10 ml-10'>  {/* this is the div which contain location */}
+                        <div className='flex flex-row mb-10 ml-10 mr-10'>  {/* this is the div which contain location */}
                             <img src={location} style={{ width: '20px', height: '20px' }} />
                             <h1>Ramdev Ji Temple, Near 229 Transit Camp, Phase 2, Ramdarbar, Chandigarh, 160002</h1>
                         </div>

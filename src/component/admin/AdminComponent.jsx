@@ -1,276 +1,168 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../dbConfig/db';
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import ConfirmModal from "../component/ComponentModal";
-
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { AdminNavbar } from './Adminnavbar';
+import AdminHeading from './AdminHeading';
 
 const AdminComponent = () => {
-  const [event, setEvent] = useState({
-    event_name: '',
-    event_start_date: '',
-    event_end_date: '',
-    event_start_time: '',
-    event_end_time: '',
-    event_description: '',
-    event_image: ''
-
-    
+  const [banner, setBanner] = useState({
+    imageUrl: '',
+    type: ''
   });
 
-  const [events, setEvents] = useState([]);
-  const [eventId, setEventId] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [modalAction, setModalAction] = useState(null);
-  const [editingEvent, setEditingEvent] = useState(null);
+  const [banners, setBanners] = useState([]);
+  const [editingBanner, setEditingBanner] = useState(null);
+  // const [bannerId, setBannerId] = useState('');
+  // const [modalAction, setModalAction] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEvent({ ...event, [name]: value });
+    setBanner(prevState => ({ ...prevState, [name]: value }));
   };
 
-
-  const handleDeleteEvent = (id) => {
-    setEventId(id);
-    setModalAction('delete');
-    setShowModal(true);
-  };
-
-  const confirmAction = async () => {
-    if (modalAction === 'create') {
-      await createEvent();
-    } else if (modalAction === 'delete') {
-      await deleteEvent(eventId);
+  const createBanner = async (e) => {
+    e.preventDefault(); // Prevent form from submitting
+    if (editingBanner) {
+      try {
+        const bannerDoc = doc(db, 'banners', editingBanner.id);
+        await updateDoc(bannerDoc, {
+          image: banner.imageUrl,
+          type: banner.type
+        //DB name:file name
+        });
+        alert('Banner updated successfully');
+        setBanners(prevBanners => prevBanners.map(b => b.id === editingBanner.id ? { ...b, image: banner.imageUrl, type: banner.type } : b));
+        setBanner({ imageUrl: '', type: '' });
+        setEditingBanner(null);
+      } catch (error) {
+        console.error('Error updating banner:', error);
+      }
+    } else {
+      try {
+        const newBanner = {
+          image: banner.imageUrl,
+          type: banner.type,
+        };
+        const docRef = await addDoc(collection(db, 'banners'), newBanner);
+        alert('Banner created successfully');
+        setBanners(prevBanners => [...prevBanners, { ...newBanner, id: docRef.id }]);
+        setBanner({ imageUrl: '', type: '' });
+      } catch (error) {
+        console.error('Error creating banner:', error);
+      }
     }
-    setShowModal(false);
-  };
-// this funtion is created in the way that if user directly click ont he create-event button without filling the information about the new event to be created it should through the error of the same 
-  const createEvent = async () => {
-    const { event_name, event_start_date, event_end_date, event_start_time, event_end_time, event_image, event_description } = event;
-  
-    // Check if all required fields are filled
-    if (!event_name || !event_start_date || !event_end_date || !event_start_time || !event_end_time || !event_image || !event_description) {
-      alert('Please fill all the required fields.');
-      return;
-    }
-    let imageUrl = event_image;
-
-    if (typeof event_image !== 'string' && event_image) {
-      imageUrl = await uploadImage(event_image);
-    }
-  
-    const newEvent = {
-      event_name,
-      event_start_date,
-      event_end_date,
-      event_start_time,
-      event_end_time,
-      event_description,
-      event_image: imageUrl,
-    };
-    // const newEvent = { ...event };
-
-    if (typeof event_image !== 'string') {
-      const imageUrl = await uploadImage(event_image);
-      newEvent.event_image = imageUrl;
-    }
-
-    await addDoc(collection(db, 'events'), event);
-  alert('Event created successfully');
-  setEvent({  //setEvent with empty values are set so that if once the create event is created the field become empty and get prepared for the creation of next event in the event list
-    event_name: '',
-    event_start_date: '',
-    event_end_date: '',
-    event_start_time: '',
-    event_end_time: '',
-    event_image: '',
-    event_description: ''
-  }); // Reset form fields
-  readEvents(); // Refresh events list after creation
-};
-
-  const readEvents = async () => {
-    const querySnapshot = await getDocs(collection(db, 'events'));
-    const eventsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-    setEvents(eventsArray);
   };
 
-
-
-  const handleEdit = (event) => {
-    setEditingEvent({...event});
-  };
-  
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditingEvent({ ...editingEvent, [name]: value });
+  const readBanners = async () => {
+    const querySnapshot = await getDocs(collection(db, 'banners'));
+    const bannerArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    setBanners(bannerArray);
   };
 
-  const updateEvent = async () => {
-    if (!editingEvent) {
-      alert('Please select an event to update.');
-      return;
-    }
-  
-    const eventDoc = doc(db, 'events', editingEvent.id);
-    await updateDoc(eventDoc, editingEvent);
-    alert('Event updated successfully');
-    setEditingEvent(null);
-    readEvents();
-  };
-
-  const cancelEdit = () => {
-    setEditingEvent(null);
-  };
-
-
-  const deleteEvent = async (id) => {
+  const deleteBanner = async (id) => {
     if (!id) {
-      alert('Event ID is required to delete an event.');
+      alert('Banner ID is required to delete a banner.');
       return;
     }
-    
-    // Use window.confirm and store the result....window.confirm is used instead of simple alert statement bcz to display the confirm and cancel buttons
-    const isConfirmed = window.confirm('Are you sure you want to delete this event?');
-    console.log(isConfirmed)
-    // Only proceed with deletion if the user confirmed
+    const isConfirmed = window.confirm('Are you sure you want to delete this banner?');
     if (isConfirmed) {
-      const eventDoc = doc(db, 'events', id);
-      await deleteDoc(eventDoc);                //if isConfirmed is true then the the event will be deleted successfuly
-      alert('Event deleted successfully');
-      readEvents(); // Refresh events list after deletion
+      const bannerDoc = doc(db, 'banners', id);
+      await deleteDoc(bannerDoc);
+      setBanners(prevBanners => prevBanners.filter(banner => banner.id !== id));
     }
-    // If not confirmed, do nothing (which effectively cancels the delete operation)
+  };
+
+  const editBanner = (bannerItem) => {
+    setBanner({
+      imageUrl: bannerItem.image,
+      type: bannerItem.type,
+    });
+    setEditingBanner(bannerItem);
   };
 
   useEffect(() => {
-    readEvents();
+    readBanners();
   }, []);
 
-
-const storage = getStorage();
-
-const uploadImage = async (file) => {
-  const storageRef = ref(storage, `images/${file.name}`);
-  await uploadBytes(storageRef, file);
-  const downloadURL = await getDownloadURL(storageRef);
-  return downloadURL;
-};
-
-const handleImageUpload = async (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setEvent({ ...event, event_image: file });
-  }
-}
-
-
-
-;
   return (
-    <div>
-      <h2 className='flex justify-center font-semibold text-5xl leading-tight mb-5 mt-3'>Admin Panel</h2>
-      {/* line height -> leading-none: 1, leading-tight: 1.25, leading-snug: 1.375, leading-normal: 1.5, leading-relaxed: 1.625, leading-loose: 2 */}
-      <h3 className=' font-semibold text-xl m-2'>For creating a New Event, fill details:</h3>
-      <form>
-        <label className='m-2'>New Event Name: &nbsp;</label>
-        <input type="text" name="event_name" placeholder="Event Name" value={event.event_name} onChange={handleChange} /><br />   {/*onChange={handleChange} ... this is important for managing the changes */}
-
-        <label className='m-2'>Event Starting Date: &nbsp;</label>
-        <input type="date" name="event_start_date" placeholder="Event Starting Date" value={event.event_start_date} onChange={handleChange} /><br />
-
-        <label className='m-2'>Event Ending Date: &nbsp;</label>
-        <input type="date" name="event_end_date" placeholder="Event Ending Date" value={event.event_end_date} onChange={handleChange} /><br />
-
-        <label className='m-2'>Event Starting Time: &nbsp;</label>
-        <input type="time" name="event_start_time" placeholder="Event Starting Time" value={event.event_start_time} onChange={handleChange} /><br />
-
-        <label className='m-2'>Event Starting Time: &nbsp;</label>
-        <input type="time" name="event_end_time" placeholder="Event Ending Time" value={event.event_end_time} onChange={handleChange} /><br />
-
-        <label className='m-2'>Event Image URL: &nbsp;</label>
-        <input type="text" name="event_image" placeholder="Event Image" value={event.event_image} onChange={handleChange} /><br />
-        {/* the image URL which we are providing in this in admin panel ..... this image should firstly be uploaded into firebase storage and then this image URL should be uploaded into the image URL uploaded*/}
-        <label className='m-2'>Event Description: &nbsp;</label>
-        <input type="text" name="event_description" placeholder="Event Description" value={event.event_description} onChange={handleChange}  /><br />
-        
-         {/* <label className='m-2'>Event Image: &nbsp;</label>
-       <input type="file" accept="event_image"  onChange={handleImageUpload} />  value={event.event_image}-- this is removed bcz when we give "value'=file to kuch error aa reha tha */}
-
-        
-        {/* <input type="text" placeholder="Event ID (for Update/Delete)" value={eventId} onChange={(e) => setEventId(e.target.value)} /> */}
-      </form>
-
-      <button className='font-semibold text-xl m-1  px-4 py-2 mt-5 bg-green-600 rounded text-white'  onClick={createEvent}>Create New Event &nbsp; &nbsp;</button>
-      {/* <button className='font-semibold text-xl m-1 border border-black px-4 py-2' onClick={readEvents}>Read Events &nbsp; &nbsp; </button>
-      <button className='font-semibold text-xl m-1 border border-black px-4 py-2' onClick={updateEvent}>Update Event &nbsp; &nbsp; </button> */}
-      {/* <button className='font-semibold text-xl' onClick={deleteEvent}>Delete Event &nbsp; &nbsp; </button> */}  
-
-      <div><br /><br />
-        {/* <h3>Events List</h3> */}
-        <div className="overflow-x-auto w-full">  {/* using this overflow-x-auto the admin panel form is able to scroll into x direction....a nd width is set to be full*/}
-  <table className="min-w-full bg-white">    {/* using this minimum width is set to be full and bg is set as white*/}
-    <thead>
-      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-        <th className="py-3 px-6 w-1/6 text-left">Event Name</th>
-        <th className="py-3 px-6 w-1/6 text-left">Start Date</th>
-        <th className="py-3 px-6 w-1/6 text-left">End Date</th>
-        <th className="py-3 px-6 w-1/6 text-left">Start Time</th>
-        <th className="py-3 px-6 w-1/6 text-left">End Time</th>
-        <th className="py-3 px-6 w-1/6 text-left">Description</th>
-        <th className="py-3 px-6 w-1/6 text-left">Image URL</th>
-        <th className="py-3 px-6 w-1/6 text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody className="text-gray-600 text-sm font-medium">
-      {events.map(event => (
-        <tr key={event.id} className="border-b border-gray-200 hover:bg-gray-100">
-          {editingEvent && editingEvent.id === event.id ? (
-            <>
-              <td className="py-3 px-6"><input className="w-full" name="event_name" value={editingEvent.event_name} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" type="date" name="event_start_date" value={editingEvent.event_start_date} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" type="date" name="event_end_date" value={editingEvent.event_end_date} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" type="time" name="event_start_time" value={editingEvent.event_start_time} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" type="time" name="event_end_time" value={editingEvent.event_end_time} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" name="event_description" value={editingEvent.event_description} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6"><input className="w-full" name="event_image" value={editingEvent.event_image} onChange={handleEditChange} /></td>
-              <td className="py-3 px-6 text-center">
-                <button className="bg-green-500 text-white px-4 py-2 rounded mr-2 ml-2 mb-2" onClick={updateEvent}>Save</button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={cancelEdit}>Cancel</button>
-              </td>
-            </>
-          ) : (
-            <>
-              <td className="py-3 px-6">{event.event_name}</td>
-              <td className="py-3 px-6">{event.event_start_date}</td>
-              <td className="py-3 px-6">{event.event_end_date}</td>
-              <td className="py-3 px-6">{event.event_start_time}</td>
-              <td className="py-3 px-6">{event.event_end_time}</td>
-              <td className="py-3 px-6">{event.event_description}</td>
-              <td className="py-3 px-6">{event.event_image}</td>
-              <td className="py-3 px-6 text-center">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2 ml-2 mb-2" onClick={() => handleEdit(event)}>Edit</button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => deleteEvent(event.id)}>Delete</button>
-              </td>
-            </>
-          )}
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+    <div className="flex flex-col min-h-screen w-full" >
+      <AdminHeading /> {/* Heading component */}
+      <div className="flex flex-1 w-full">
+        <AdminNavbar /> {/* Sidebar */}
+        <div className="flex-1 p-6 w-full max-w-full overflow-x-hidden"> {/* Main content area...... using this flex-1 this create new banner is streched and is placed at the center of the screen */}
+          <div className='relative bg-[#DCB44D] bg-opacity-[25%]  ml-36 mr-4'>
+            <h3 className=' mb-4 font-semibold text-3xl text-[#DCB44D] text-center'>Create New Banner!</h3>
+            <form className="flex flex-col  p-5">
+              <label className='mb-2 text-lg'>Banner Image URL:</label>
+              <input 
+                type="text" 
+                name="imageUrl" 
+                placeholder="Image URL" 
+                value={banner.imageUrl} 
+                onChange={handleChange} 
+                className='border p-2 mb-4'
+              />
+              <label className='mb-2 text-lg'>Banner Heading:</label>
+              <input 
+                type="text" 
+                name="type" 
+                placeholder="Type Here" 
+                value={banner.type} 
+                onChange={handleChange} 
+                className='border p-2 mb-4'
+              />
+              <div className="flex justify-center mt-5">
+              <button  // if you want to allign button into the center of the form you have to give allignment to the div containing this butoon
+                className='md:w-1/5 sm:w-2/5 font-semibold text-xl border px-4 py-2 bg-green-500 text-white hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed'
+                onClick={createBanner}
+                disabled={!banner.imageUrl || !banner.type}
+              >
+                {editingBanner ? 'Update Banner' : 'Create Banner'}
+              </button>
+            </div>
+            </form>
+          </div>
+          <div className=' ml-36 mr-4 min-w-screen bg-white border border-gray-200 mt-5 overflow-x-auto'>
+            <table className='w-full mt-5'>
+              <thead>
+                <tr>
+                  <th className='text-xl text-left text-[#DCB44D] whitespace-nowrap pl-2'>Banner Image</th>
+                  <th className='text-xl text-left text-[#DCB44D] whitespace-nowrap '>Banner Heading</th>
+                  <th className='text-xl text-left text-[#DCB44D] whitespace-nowrap'>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {banners.map((bannerItem) => (
+                  <tr key={bannerItem.id}>
+                    <td className="py-4 pl-2 whitespace-nowrap ">
+                      <a href={bannerItem.image} target="_blank" rel="noopener noreferrer">
+                        View Image
+                      </a>
+                    </td>
+                    <td className="py-6 whitespace-nowrap">{bannerItem.type}</td>
+                    <td >
+                      <button 
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2 my-2 whitespace-nowrap" 
+                        onClick={() => editBanner(bannerItem)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="bg-red-500 text-white px-4 py-2 rounded whitespace-nowrap " 
+                        onClick={() => deleteBanner(bannerItem.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    
-      {/* {showModal && (
-        <ConfirmModal
-          title={modalAction === 'create' ? "Confirm Event Creation" : "Confirm Event Deletion"}
-          message={modalAction === 'create' ? "Are you sure you want to create this event?" : "Are you sure you want to delete this event?"}
-          onConfirm={confirmAction}
-          onCancel={() => setShowModal(false)}
-        />
-      )} */}
     </div>
   );
 };
-//The error Firebase Storage: Invalid URL is shown because Firebase Storage expects the URL provided to be a valid and direct URL to an image or a file that it can access and possibly retrieve. However, the URL you've provided is a Google redirect link, not a direct link to an image.
+
 export default AdminComponent;

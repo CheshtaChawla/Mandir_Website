@@ -1,67 +1,49 @@
 import '../component/responsiveness/Event.css';
-export default function EventCard({name ,startDate, endDate, startTime, endTime, image, description, onButtonClick}) {
 
+export default function EventCard({ name, startDate, endDate, startTime, endTime, image, description, onButtonClick }) {
   return (
-
-    <div className="relative lg:mt-10 md:mt-5 2xl:ml-40 2xl:mr-40 xl:ml-40 xl:mr-40 lg:ml-40 lg:mr-40 md:ml-20 md:mr-20 sm:ml-10 sm:mr-10 sm:mt-5 flex mb-1"> {/* this is the css of the slider of the events section */}
-      <div>
-        <div className="custom-event-card py-8 border border-orange-100 shadow-md shadow-orange-200 rounded-2xl flex">
-          {/* events carasole */}
-          <div className="flex-1 pl-5">
-            {/* left -> content*/}
-            <div className="float-left clear-right">
-              {/* Event Heading*/}
-              <h1 className="custom-event-inner-heading text-orange-500 text-3xl mb-6">
-                {name}
-              </h1>
-              <div>
-                {/* Date and Time information*/}
-                <div className="flex mb-5">
-                  {/* date -> float left*/}
-                  <div className="custom-date float-left mr-5 flex flex-row ">
-                    <span className="custom-date-icon material-symbols-outlined text-2xl">calendar_month</span>
-                    <h4 className='custom-date-text text-xl'> {startDate} - {endDate} </h4>
-                  </div>
-                  {/* time -> float right*/}
-                  <div className="custom-time float-right ml-5 flex flex-row">
-                    <span class="material-symbols-outlined custom-time-icon text-2xl">alarm_on</span>
-                    <span className='custom-time-text text-xl'>{startTime} - {endTime}</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-
-                {/* Breif information about Event */}
-                <p className='custom-event-description mr-6'>
-                  {description}
-                </p>
-              </div>
-              <div>
-
-                {/* Donate button */}
-                <div className='custom-event-donateButton sm:mr-8 2xl:mt-16 xl:mt-16 lg:mt-16'>
-                  <button
-                  className="text-black-300 bg-orange-400 w-full h-10 flex justify-center rounded-lg text-xl mt-10 py-1"
-                  onClick={onButtonClick}
-                  >
-                    Donate
-                  </button>
-                </div>
-              </div>
+    <div className="relative lg:mt-10 md:mt-5 2xl:mx-40 xl:mx-40 lg:mx-40 md:mx-20 sm:mx-10 sm:mt-5 flex mb-1">
+      <div className="custom-event-card py-8 border border-orange-100 shadow-md shadow-orange-200 rounded-2xl flex flex-col md:flex-row w-full mx-auto  flex items-center">
+        {/* Content Section (full width on mobile, 2/3 on larger screens) */}
+        <div className="w-full md:w-2/3 h-full px-5 md:pl-5 md:pr-0 mx-auto text-left">
+          <h1 className="custom-event-inner-heading text-orange-500 text-3xl mb-6">
+            {name}
+          </h1>
+          
+          <div className="flex flex-col sm:flex-row mb-5 sm:justify-start">
+            <div className="custom-date mb-2 sm:mb-0 sm:mr-5 flex flex-row items-center">
+              <span className="custom-date-icon material-symbols-outlined text-2xl mr-2">calendar_month</span>
+              <h4 className='custom-date-text text-xl'> ({startDate}) to ({endDate}) </h4>
+            </div>
+            <div className="custom-time flex flex-row items-center">
+              <span className="material-symbols-outlined custom-time-icon text-2xl mr-2">alarm_on</span>
+              <span className='custom-time-text text-xl'>({startTime}) to ({endTime})</span>
             </div>
           </div>
-          <div className="float-right clear-left ml-5 mr-5 md:block hidden">
-            {/* right -> image */}
-            <img
-              className="custom-event-image w-auto h-auto"
-              src={image}   //in the database i have to pass the image with the datatype = string
-              alt={name}
-            />
+          
+          <p className='custom-event-description'>
+            {description}
+          </p>
+          
+          <div className='custom-event-donateButton mt-10 md:mt-16'>
+            <button
+              className="text-black-300 bg-orange-400 w-full h-10 flex justify-center items-center rounded-lg text-xl py-1"
+              onClick={onButtonClick}
+            >
+              Join Event
+            </button>
           </div>
         </div>
-
+        
+        {/* Image Section (hidden on mobile, 1/3 width on larger screens) */}
+        <div className="w-full md:w-1/3 h-full mt-5 md:mt-0 md:ml-5 md:mr-5 hidden md:block mx-auto">   {/* mx-auto - means margin-left and margin-right */}
+          <img
+            className="custom-event-image w-full h-auto rounded-lg"
+            src={image}
+            alt={name}
+          />
+        </div>
       </div>
     </div>
-
   );
 }

@@ -20,7 +20,7 @@ export default function Footer() {
         <footer className=' flex bg-orange-400 w-full lg:w-full lg:flex-row' >
             <div className='flex flex-row w-1/3'>
                 <div className='2xl:ml-40 xl:ml-40 lg:ml-20 md:ml-6 my-5' style={{ width: '300px' }}>  {/* this is the div for the  left side NAME and whatsapp and insta handel controller */}
-                    <h1 className='text-xl'>Shri Vishnu Avatar Baba Ramdev Ji Sabha, Regd. 4528</h1>
+                    <h1 className='text-xl'>श्री विष्णु अवतार बाबा रामदेव जी सभा, रामदरबार, चंडीगढ़ (रजि. 4528)</h1>
                     <div style={{ width: '300px', height: '1px' }} className='bg-black'></div>
                     <div className='flex flex-row'>
                         {/* <ul><li><link to=""></link></li></ul> */}
@@ -42,9 +42,9 @@ export default function Footer() {
                                 <li onClick={() => scrollToSection("event")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                     Events
                                 </li>
-                                <li onClick={() => scrollToSection("charity")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
+                                {/* <li onClick={() => scrollToSection("charity")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                     Charity
-                                </li>
+                                </li> */}
                                 <li onClick={() => scrollToSection("booking")} className='my-1 hover:underline' style={{ cursor: 'pointer' }}>
                                     Booking
                                 </li>

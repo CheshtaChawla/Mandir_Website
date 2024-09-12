@@ -1,12 +1,37 @@
+import React, { useEffect, useState, useRef } from 'react';
 import BookingCard from "./Booking-Card"
 import banner2 from "../../Image/banner-2.jpg"
+import fetchBookingData from './fetchBookingData';
 
 import '../component/responsiveness/Booking.css';
 
 import Slider from "react-slick";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
+
 export default function BookingComponent() {
+
+  const [activeModal, setActiveModal] = useState(null);
+  const [bookingData, setBookingData] = useState([]);
+
+  useEffect(() => {
+    const getBookingData = async () => {
+      const data = await fetchBookingData();  // fetches all documents from the events collection.
+      setBookingData(data);
+      
+    };
+    getBookingData();
+  }, []);
+
+
+
+  const handlePopUpButtonClick = () => {
+    setActiveModal(true);
+  };
+
+  const handlePopUpButtonClose = () => {
+    setActiveModal(null);
+  };
 
   const settings = {
     dots: true,
@@ -18,11 +43,11 @@ export default function BookingComponent() {
     autoplay: true,
   };
 
-  let BookingData = [
-    {image: banner2, heading: "Book Kirtan", id:1, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
-    {image: banner2, heading: "Book", id:2, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
-    {image: banner2, heading: "Kirtan", id:3, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
-  ]
+  // let BookingData = [
+  //   {image: banner2, heading: "Book Kirtan", id:1, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
+  //   {image: banner2, heading: "Book", id:2, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
+  //   {image: banner2, heading: "Kirtan", id:3, details: "Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Shiva, between February and March. According to the Hindu calendar, the festival is observed on the fourteenth day of the dark half of the lunar month of Phalguna or Magha. Maha Shivaratri is a Hindu festival celebrated annually in honour of the deity Shiva."},
+  // ]
   return (
     <>
       <div className="custom-booking-div ">  {/* we will use flex in the case of aligning more elements in the same line */}
@@ -33,9 +58,16 @@ export default function BookingComponent() {
         </h1>
         <div>
           <div className="custom-booking-slider rounded-2xl border border-orange-100 lg:mt-10 lg:ml-40 lg:mr-40 md:mt-5 md:ml-20 md:mr-20 sm:mt-5 sm:ml-14 sm:mr-14 ">
-            <Slider {...settings} >
-              {BookingData.map(data => (
-                <BookingCard key={data.id}>{data}</BookingCard>
+          <Slider {...settings}>
+              {bookingData.map((data,index) => (
+                <BookingCard
+                key={index}
+                buttonName={data.buttonText}
+                image={data.image}
+                heading={data.heading}
+                paragraph={data.paragraph}
+                onButtonClick={handlePopUpButtonClick}
+                />
               ))}
             </Slider>
           </div>

@@ -36,9 +36,9 @@ const HeaderMobile = () => {
               <li className='border-b-2 border-orange-300 pl-2 pr-2 flex justify-center items-center' onClick={() => scrollToSection("event")}>
                 Event
               </li>
-              <li className='border-b-2 border-orange-300 pl-2 pr-2 flex justify-center items-center' onClick={() => scrollToSection("charity")}>
+              {/* <li className='border-b-2 border-orange-300 pl-2 pr-2 flex justify-center items-center' onClick={() => scrollToSection("charity")}>
                 Charity
-              </li>
+              </li> */}
               <li className='border-b-2 border-orange-300 pl-2 pr-2 flex justify-center items-center' onClick={() => scrollToSection("booking")}>
                 Booking
               </li>

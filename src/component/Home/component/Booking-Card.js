@@ -1,27 +1,31 @@
-
 import '../component/responsiveness/Booking.css';
 
-export default function BookingCard(props) {
-
+export default function BookingCard({ image, heading, paragraph, buttonName }) {
 
   return (
-    <>
-
-      {/* <div className="rounded-3xl"> */}
-      <div className="custom-booking-card flex 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-col xs:flex-col border border-orange-100 shadow-md shadow-orange-200 rounded-2xl mb-1"> {/* this is the IMAGE div -> float-left*/}
-        <div className='custom-booking-image-div h-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-1/2 2xl:flex-col xl:flex-col lg:flex-col md:flex-col'>
-          <img className="custom-booking-image rounded-xl" src={props.children.image} alt="Booking Image" />
-        </div>
-        <div className="custom-booking-details-div h-full pb-3 rounded-xl 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-1/2 2xl:flex-col xl:flex-col lg:flex-col md:flex-col"> {/* this is the CONTENT div -> float-right*/}
-          <h1 className="custom-booking-inner-heading text-3xl text-orange-500 2xl:ml-10 xl:ml-10 lg:ml-10 md:ml-10 sm:ml-10 pt-5 pb-5">{props.children.heading}</h1>
-          <p className="custom-booking-details ml-10 pb-5 mr-10">{props.children.details}</p>
-          <div className="custom-booking-button 2xl:ml-10 xl:ml-10 lg:ml-10 md:ml-10 sm:ml-10">
-            <button onClick={() => window.location.href = "https://api.whatsapp.com/send?phone=+91-9988308752&text=Hey%20I%20have%20a%20query%20regarding%20Booking%20of%20the%20kirtan"} className="bg-orange-400 rounded-xl pt-2 pb-2 text-xl mt-10" style={{ width: "90%" }}>Book</button>
-          </div>
-        </div>
+    <div className="custom-booking-card flex flex-col lg:flex-row border border-orange-100 shadow-md shadow-orange-200 rounded-2xl mb-1 h-full">
+      {/* Image Section */}
+      <div className="w-full lg:w-1/2 h-full">
+        <img className="custom-booking-image w-full h-auto rounded-xl" src={image} alt="Booking Image" />
       </div>
-      {/* </div> */}
-    </>
 
+      {/* Content Section */}
+      <div className="w-full lg:w-1/2 h-full flex flex-col p-4 flex justify-end">
+        <div>
+          <h1 className="custom-booking-inner-heading text-3xl text-orange-500 mb-4">{heading}</h1>
+          <p className="custom-booking-details mb-4">{paragraph}</p>
+        </div>
+        <div className="custom-booking-button mb-2 ">
+          <button
+            onClick={() => window.location.href = "https://api.whatsapp.com/send?phone=+91-9988308752&text=Hey%20I%20have%20a%20query%20regarding%20Booking%20of%20the%20kirtan"}
+            className="bg-orange-400 rounded-xl text-xl py-2 px-4 w-full "
+            style={{ width: "100%" }}
+          >
+            {buttonName}
+          </button>
+        </div>
+
+      </div>
+    </div>
   );
 }

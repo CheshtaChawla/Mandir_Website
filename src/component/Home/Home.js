@@ -32,7 +32,7 @@ export default function Home() {
 
       <section id="hero"><HeroSection /></section>
       <section id="event"><EventComponent /></section>
-      <section id="charity"><CharityComponent /></section>
+      {/* <section id="charity"><CharityComponent /></section> */}
       <section id="booking"><BookingComponent /></section>
       <section id="committee"><CommitteeComponent /></section>
       <section id="contact"><ContactUs /></section>

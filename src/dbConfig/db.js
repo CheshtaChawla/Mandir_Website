@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";  // storage is used to fetch the URL of images stored in Firebase Storage and add it to the event data fetched from Firestore.
-
+import { getAuth } from "firebase/auth"; //Import authentication
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -23,6 +23,7 @@ const firebaseConfig = {
   // Create a root reference
   export const storage = getStorage(app);
 
+  export const auth = getAuth(app); 
 
   //THIS IS FOR MY CONVENIENCE
    // url link for db at firebase https://console.firebase.google.com/u/0/project/mandir-website-c9eb7/settings/general/web:MDA5NmZjNzYtZTUxYi00NmFhLWI1MGItYzVlN2JjZTlhMGJm
